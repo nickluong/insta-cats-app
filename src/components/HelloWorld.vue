@@ -85,7 +85,7 @@ export default {
     },
     async getPosts() {
       const posts = await getAllPosts();
-      this.posts = posts.slice(posts.length - 9, posts.length);
+      this.posts = posts.slice(posts.length - 9, posts.length).reverse();
       console.table(this.posts);
     },
     async getComments() {

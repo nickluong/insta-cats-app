@@ -1,14 +1,12 @@
 <template>
   <div class="w-3/4 mx-auto">
-    <nav
-      class="flex items-center justify-between flex-wrap p-2.5 bg-gradient-to-r from-indigo-600 via-blue-500 to-sky-600 rounded-lg"
-    >
+    <nav class="flex items-center justify-between flex-wrap px-4 rounded-lg">
       <svg
         aria-hidden="true"
         focusable="false"
         data-prefix="fas"
         data-icon="cat"
-        class="w-20 h-20 ml-2 hover:animate-spin"
+        class="w-24 h-24 ml-2 hover:animate-spin text-garfield/90"
         role="img"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 512 512"
@@ -27,46 +25,29 @@
       <button class="transition-colors text-center bg-black" @click="getComments">
         Get Comments
       </button> -->
-      <button
-        class="transition-colors text-center bg-tangerine-100 hover:bg-indigo-700 mr-2"
-        @click="showModal = !showModal"
-      >
-        Sign Up
-      </button>
-    </nav>
-    <!-- <div
-      class="bg-white dark:bg-slate-800 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl"
-    >
-      <div>
-        <span
-          class="inline-flex items-center justify-center p-2 bg-indigo-500 rounded-md shadow-lg"
+      <div class="flex-end tracking-wider">
+        <button
+          class="transition-colors w-28 text-center text-base bg-tangerine-400 hover:bg-indigo-600 text-slate-800 mr-2 hover:border-indigo-600 rounded-sm"
+          @click="showSignUpModal"
         >
-          <svg
-            class="h-6 w-6 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          ></svg>
-        </span>
+          Sign Up
+        </button>
+        <button
+          class="transition-colors w-28 text-center text-base bg-white hover:bg-indigo-600 text-slate-800 mr-2 border-2 border-tangerine-400 hover:border-indigo-600 rounded-sm"
+          @click="showUploadModal"
+        >
+          Upload
+        </button>
       </div>
-      <h3 class="text-white mt-5 text-base font-medium tracking-tight">
-        Writes Upside-Down
-      </h3>
-      <p class="text-slate-400 mt-2 text-sm">
-        The Zero Gravity Pen can be used to write in any orientation, including
-        upside-down. It even works in outer space.
-      </p>
-    </div> -->
-    <div class="grid grid-cols-3 gap-12 mt-12">
+    </nav>
+    <div class="grid grid-cols-1 sm:grid-cols-3 sm:gap-10 mt-12 justify-items-center">
       <div v-for="post in posts">
         <Card :post="post" @click="showCard = !showCard" :show="showCard" />
       </div>
     </div>
   </div>
 
-  <Modal :show="showModal" type="email" @close="showModal = false" />
+  <Modal :show="showModal" :type="modalType" @close="showModal = false" />
 </template>
 
 <script>
@@ -87,6 +68,7 @@ export default {
   data() {
     return {
       showModal: false,
+      modalType: "",
       showCard: false,
       users: [],
       posts: [],
@@ -103,12 +85,20 @@ export default {
     },
     async getPosts() {
       const posts = await getAllPosts();
-      this.posts = posts.slice(0, 9);
+      this.posts = posts.slice(posts.length - 9, posts.length);
       console.table(this.posts);
     },
     async getComments() {
       const comments = await getAllComments();
       this.comments = comments;
+    },
+    showSignUpModal() {
+      this.showModal = true;
+      this.modalType = "signup";
+    },
+    showUploadModal() {
+      this.showModal = true;
+      this.modalType = "upload";
     },
   },
 };

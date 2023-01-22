@@ -245,7 +245,7 @@ export default {
         </div>
         <div
           v-else-if="type === 'view' && post !== null"
-          class="container w-3/5 h-5/6 p-4 tracking-wide relative mx-auto my-auto rounded-xl bg-orange-50 divide-y-2 divide-tangerine-400 border border-tangerine-400 text-slate-900"
+          class="container w-3/5 max-h-11/12 p-4 tracking-wide relative mx-auto my-auto rounded-xl bg-orange-50 divide-y-2 divide-tangerine-400 border border-tangerine-400 text-slate-900"
         >
           <div class="flex flex-row place-items-center pb-2">
             <h3 class="text-2xl my-2 mx-auto pl-8 font-inter">
@@ -267,7 +267,7 @@ export default {
               />
             </svg>
           </div>
-          <div id="preview" class="flex flex-col py-8">
+          <div id="preview" class="flex flex-col py-8 overflow-y-scroll">
             <img
               v-if="post.image"
               :src="'http://catstagram.lofty.codes/media/' + post.image"
@@ -294,17 +294,18 @@ export default {
               </div>
             </div>
             <div
-              class="container w-4/6 bg-white border border-tangerine-400 divide-y divide-tangerine-400 mx-4 rounded-md"
+              class="container w-4/6 max-h-3/6 bg-white border border-tangerine-400 divide-y divide-tangerine-400 mx-4 rounded-m overflow-y-scroll"
+              v-if="post.comments.length"
             >
               <div
-                class="flex flex-col align-middle w-full max-h-fit my-1 self-stretch"
+                class="flex flex-col align-middle w-full max-h-1/5 my-1 self-stretch"
                 v-for="comment in post.comments"
               >
                 <div
-                  class="flex flex-row flex-initial self-start items-center tracking-wider mx-4"
+                  class="flex flex-row flex-initial self-start items-center tracking-wider mx-4 max-h-fit"
                 >
                   <svg
-                    class="flex-initial align-middle w-8 h-8 text-tangerine-400 card"
+                    class="flex-initial align-middle w-8 h-8 min-w-fit text-tangerine-400 card"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
@@ -319,14 +320,7 @@ export default {
               </div>
             </div>
           </div>
-          <div class="px-3 py-4 h-1/5 text-center space-x-4 md:block tracking-wider">
-            <!-- <button
-              @click="uploadPost"
-              :disabled="!type === 'upload'"
-              class="ml-2 md:mb-0 bg-white px-5 border-tangerine-400 text-sm shadow-sm font-medium border text-slate-900 rounded-md hover:shadow-lg hover:bg-gray-100 float-right"
-            >
-              Post
-            </button> -->
+          <div class="px-3 py-4 mb-5 h-1/6 text-center space-x-4 md:block tracking-wider">
             <button
               @click="clearInputs"
               class="md:mb-0 bg-tangerine-400 px-5 text-sm shadow-sm font-medium text-slate-900 rounded-md hover:shadow-lg hover:bg-slate-600 float-right"

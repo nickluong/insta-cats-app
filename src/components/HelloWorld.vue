@@ -65,7 +65,6 @@
 <script>
 import { getAllUsers } from "../services/UserService";
 import { getAllPosts } from "../services/PostService";
-import { getAllComments } from "../services/CommentService";
 import Modal from "./Modal.vue";
 import Card from "./Card.vue";
 
@@ -104,7 +103,6 @@ export default {
     async getPosts() {
       const posts = await getAllPosts();
       this.allPosts = posts.reverse();
-      console.table(this.posts);
     },
     showViewModal(card) {
       this.post = card;

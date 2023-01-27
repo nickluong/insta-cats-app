@@ -9,10 +9,30 @@ export default {
     type: String,
     post: Object,
   },
-  computed() {
-    if (post !== null) {
-      this.comments = post.comments;
+  mounted() {
+    if (this.type == "view" && this.post) {
+      this.getComments();
     }
+  },
+  computed: {
+    updatedComments() {
+      this.comments = this.post.comments;
+      return this.comments;
+    },
+    validUpload() {
+      return this.file !== null && this.modalTitle !== "";
+    },
+    validSignUp() {
+      return (
+        (this.modalEmail &&
+          this.modalPassword &&
+          this.modalFirstName &&
+          this.modalLastName) !== ""
+      );
+    },
+    validComment() {
+      return this.modalComment !== "";
+    },
   },
   data() {
     return {
@@ -25,6 +45,7 @@ export default {
       comments: [],
       file: null,
       image: null,
+      isUploading: false,
     };
   },
   methods: {
@@ -40,34 +61,33 @@ export default {
         this.clearInputs();
       });
     },
-    validUpload() {
-      this.file && this.modalTitle !== "" ? true : false;
-    },
     uploadPost() {
-      if (validUpload()) {
-        let post = new FormData();
-        post.append("name", this.modalTitle);
-        post.append("image", this.file);
+      let post = new FormData();
+      post.append("name", this.modalTitle);
+      post.append("image", this.file);
+      this.isUploading = true;
 
-        createPost(post).then((res) => {
-          console.log(res);
-          this.clearInputs();
-        });
-      }
+      createPost(post).then((res) => {
+        console.log(res);
+        this.$emit("post");
+        this.clearInputs();
+      });
+    },
+    getComments() {
+      this.comments = this.post.comments;
     },
     postComment() {
-      console.log(this.post);
-      if (this.modalComment !== "") {
-        const comment = {
-          postId: this.post.pk,
-          comment: this.modalComment,
-        };
-        createComment(comment.postId, comment.comment).then((res) => {
-          console.log(res);
-          this.clearInputs();
-        });
+      const comment = {
+        postId: this.post.pk,
+        comment: this.modalComment,
+      };
+      this.isUploading = true;
+      createComment(comment.postId, comment.comment).then((res) => {
+        this.comments.unshift(res);
         this.$emit("post");
-      }
+        this.modalComment = "";
+        this.isUploading = false;
+      });
     },
     clearInputs() {
       this.$emit("close");
@@ -79,6 +99,7 @@ export default {
       this.modalComment = "";
       this.file = null;
       this.image = null;
+      this.isUploading = false;
     },
     onChange(e) {
       const file = e.target.files[0];
@@ -150,10 +171,14 @@ export default {
               />
             </span>
           </div>
-          <div class="px-3 pt-5 h-1/5 text-center space-x-4 md:block tracking-wider">
+          <div class="px-3 pt-5 h-1/5 text-center space-x-2 md:block tracking-wider">
+            <span v-if="!validSignUp" class="text-red-600 float-left"
+              >* Please Fill Required Fields</span
+            >
             <button
               @click="registerUser"
-              :disabled="!type === 'signup'"
+              v-if="validSignUp"
+              :disabled="!validSignUp || isUploading"
               class="ml-2 md:mb-0 bg-white px-5 border-tangerine-400 text-sm shadow-sm font-medium border text-slate-900 rounded-md hover:shadow-lg hover:bg-gray-100 float-right"
             >
               Save
@@ -208,7 +233,7 @@ export default {
             </div>
             <div class="flex flex-col ml-12 self-start">
               <span class="flex flex-initial align-middle justify-between mb-4">
-                Choose Photo:
+                Choose Photo :
                 <input
                   href="cat.jpg"
                   type="file"
@@ -217,7 +242,7 @@ export default {
                   @change="onChange"
                 />
               </span>
-              <span class="flex flex-initial align-middle justify-between">
+              <span class="flex flex-initial align-middle justify-between mb-4">
                 Title:
                 <input
                   type="text"
@@ -228,9 +253,13 @@ export default {
             </div>
           </div>
           <div class="px-3 py-4 h-1/5 text-center space-x-4 md:block tracking-wider">
+            <span v-if="!validUpload" class="text-red-600 float-left ml-2"
+              >* Please Fill Required Fields</span
+            >
             <button
               @click="uploadPost"
-              :disabled="!type === 'upload'"
+              v-if="validUpload"
+              :disabled="!validUpload || isUploading"
               class="ml-2 md:mb-0 bg-white px-5 border-tangerine-400 text-sm shadow-sm font-medium border text-slate-900 rounded-md hover:shadow-lg hover:bg-gray-100 float-right"
             >
               Post
@@ -245,7 +274,7 @@ export default {
         </div>
         <div
           v-else-if="type === 'view' && post !== null"
-          class="container w-3/5 max-h-11/12 p-4 tracking-wide relative mx-auto my-auto rounded-xl bg-orange-50 divide-y-2 divide-tangerine-400 border border-tangerine-400 text-slate-900"
+          class="w-3/5 max-h-auto p-4 tracking-wide relative mx-auto my-auto rounded-xl bg-orange-50 divide-y-2 divide-tangerine-400 border border-tangerine-400 text-slate-900"
         >
           <div class="flex flex-row place-items-center pb-2">
             <h3 class="text-2xl my-2 mx-auto pl-8 font-inter">
@@ -287,6 +316,7 @@ export default {
                 />
                 <button
                   @click="postComment"
+                  :disabled="!validComment || isUploading"
                   class="md:mb-0 ml-4 h-8 bg-tangerine-400 pt-1.5 px-5 text-sm shadow-sm font-medium align-middle text-slate-900 rounded-md hover:shadow-lg hover:bg-slate-600 float-right"
                 >
                   Comment
@@ -294,15 +324,15 @@ export default {
               </div>
             </div>
             <div
-              class="container w-4/6 max-h-3/6 bg-white border border-tangerine-400 divide-y divide-tangerine-400 mx-4 rounded-m overflow-y-scroll"
-              v-if="post.comments.length"
+              class="container w-4/6 max-h-48 bg-white border border-tangerine-400 divide-y divide-tangerine-400 mx-4 rounded-md overflow-y-scroll"
+              v-if="updatedComments.length"
             >
               <div
                 class="flex flex-col align-middle w-full max-h-1/5 my-1 self-stretch"
-                v-for="comment in post.comments"
+                v-for="comment in updatedComments"
               >
                 <div
-                  class="flex flex-row flex-initial self-start items-center tracking-wider mx-4 max-h-fit"
+                  class="flex flex-row flex-initial self-start items-center tracking-wider mx-4 max-h-fit bg-white"
                 >
                   <svg
                     class="flex-initial align-middle w-8 h-8 min-w-fit text-tangerine-400 card"
@@ -358,7 +388,7 @@ export default {
   vertical-align: middle;
 }
 
-.modal-container {
+/* .modal-container {
   width: 300px;
   margin: 0px auto;
   padding: 20px 30px;
@@ -366,7 +396,7 @@ export default {
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
-}
+} */
 
 .modal-body {
   margin: 20px 0;

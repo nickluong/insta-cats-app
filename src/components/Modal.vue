@@ -261,13 +261,13 @@ export default {
               @click="uploadPost"
               v-if="validUpload"
               :disabled="!validUpload || isUploading"
-              class="ml-2 md:mb-0 bg-white px-5 border-tangerine-400 text-sm shadow-sm font-medium border text-slate-900 rounded-md hover:shadow-lg hover:bg-gray-100 float-right"
+              class="ml-2 md:mb-0 bg-white px-5 border-tangerine-400 text-sm shadow-sm font-medium border text-slate-900 rounded-md hover:shadow-lg hover:bg-gray-200 float-right"
             >
               Post
             </button>
             <button
               @click="clearInputs"
-              class="md:mb-0 bg-tangerine-400 px-5 text-sm shadow-sm font-medium text-slate-900 rounded-md hover:shadow-lg hover:bg-slate-600 float-right"
+              class="md:mb-0 bg-tangerine-400 px-5 text-sm shadow-sm font-medium text-slate-900 rounded-md hover:shadow-lg hover:bg-gray-200 float-right"
             >
               Close
             </button>
@@ -318,7 +318,7 @@ export default {
                 <button
                   @click="postComment"
                   :disabled="!validComment || isUploading"
-                  class="md:mb-0 ml-4 h-8 bg-tangerine-400 pt-1.5 px-5 text-sm shadow-sm font-medium align-middle text-slate-900 rounded-md hover:shadow-lg hover:bg-slate-600 float-right"
+                  class="md:mb-0 ml-4 h-8 bg-tangerine-400 pt-1.5 px-5 text-sm shadow-sm font-medium align-middle text-slate-900 rounded-md hover:shadow-lg hover:bg-gray-200 float-right"
                 >
                   Comment
                 </button>
@@ -355,7 +355,7 @@ export default {
           <div class="px-3 py-4 mb-5 h-1/6 text-center space-x-4 md:block tracking-wider">
             <button
               @click="clearInputs"
-              class="md:mb-0 bg-tangerine-400 px-5 text-sm shadow-sm font-medium text-slate-900 rounded-md hover:shadow-lg hover:bg-slate-600 float-right"
+              class="md:mb-0 bg-tangerine-400 px-5 text-sm shadow-sm font-medium text-slate-900 rounded-md hover:shadow-lg hover:bg-gray-200 float-right"
             >
               Close
             </button>

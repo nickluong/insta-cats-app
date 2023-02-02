@@ -1,8 +1,28 @@
-# Vue 3 + Vite
+# Insta-Cats App built with Vue 3 + Vite
+Insta-Cats is a basic app that features
+- User Signup
+- View all photos with preview images
+- View comment on post
+- Upload photo
+- Test coverage
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Scripts
 
-## Recommended IDE Setup
+To install dependencies and run main app, use:
+```bash
+npm run dev
+```
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+To run vitest files, use:
+```bash
+npm run test
+```
 
+To run test coverage, use:
+```bash
+npm run coverage
+```
+
+## Some Project Notes
+- Implementing virtual lists would probably help with render performance
+- Test coverage needs work

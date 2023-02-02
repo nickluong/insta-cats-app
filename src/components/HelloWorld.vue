@@ -18,13 +18,13 @@
       </svg>
       <div class="flex-end tracking-wider">
         <button
-          class="transition-colors w-28 text-center text-base bg-tangerine-400 hover:bg-indigo-600 text-slate-800 mr-2 hover:border-indigo-600 rounded-sm"
+          class="transition-colors w-28 text-center text-base bg-tangerine-400 hover:shadow-lg hover:bg-gray-200 text-slate-800 mr-2 rounded-sm"
           @click="showSignUpModal"
         >
           Sign Up
         </button>
         <button
-          class="transition-colors w-28 text-center text-base bg-white hover:bg-indigo-600 text-slate-800 mr-2 border-2 border-tangerine-400 hover:border-indigo-600 rounded-sm"
+          class="transition-colors w-28 text-center text-base bg-white hover:shadow-lg hover:bg-gray-200 text-slate-800 mr-2 border border-tangerine-400 rounded-sm"
           @click="showUploadModal"
         >
           Upload

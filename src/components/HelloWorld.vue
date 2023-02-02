@@ -130,21 +130,4 @@ export default {
   transform: scale(1.08);
   box-shadow: 0 3px 12px 0 rgba(#e2e8f0), 0 1px 15px 0 rgba(#e2e8f0);
 }
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-gap: 1rem;
-  max-width: 80rem;
-  margin: 5rem auto;
-  padding: 0 5rem;
-}
-
-.body__profile__photo img {
-  border-radius: 50%;
-  width: 200px;
-  height: 200px;
-  border: 5px solid #fff;
-  top: 50px;
-  position: relative;
-}
 </style>

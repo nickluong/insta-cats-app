@@ -1,114 +1,3 @@
-<script>
-import { createUser } from "../services/UserService";
-import { createPost } from "../services/PostService";
-import { createComment } from "../services/CommentService";
-
-export default {
-  props: {
-    type: String,
-    post: Object,
-  },
-  mounted() {
-    if (this.type == "view" && this.post) {
-      this.getComments();
-    }
-  },
-  computed: {
-    updatedComments() {
-      this.comments = this.post.comments;
-      return this.comments;
-    },
-    validUpload() {
-      return this.file !== null && this.modalTitle !== "";
-    },
-    validSignUp() {
-      return (
-        (this.modalEmail &&
-          this.modalPassword &&
-          this.modalFirstName &&
-          this.modalLastName) !== ""
-      );
-    },
-    validComment() {
-      return this.modalComment !== "";
-    },
-  },
-  data() {
-    return {
-      modalEmail: "",
-      modalPassword: "",
-      modalFirstName: "",
-      modalLastName: "",
-      modalTitle: "",
-      modalComment: "",
-      comments: [],
-      file: null,
-      image: null,
-      isUploading: false,
-    };
-  },
-  methods: {
-    async registerUser() {
-      const user = {
-        email: this.modalEmail,
-        password: this.modalPassword,
-        firstName: this.modalFirstName,
-        lastName: this.modalLastName,
-      };
-      createUser(user.email, user.password, user.firstName, user.lastName).then((res) => {
-        console.log(res);
-        this.clearInputs();
-      });
-    },
-    uploadPost() {
-      let post = new FormData();
-      post.append("name", this.modalTitle);
-      post.append("image", this.file);
-      this.isUploading = true;
-
-      createPost(post).then((res) => {
-        console.log(res);
-        this.$emit("post");
-        this.clearInputs();
-      });
-    },
-    getComments() {
-      this.comments = this.post.comments;
-    },
-    postComment() {
-      const comment = {
-        postId: this.post.pk,
-        comment: this.modalComment,
-      };
-      this.isUploading = true;
-      createComment(comment.postId, comment.comment).then((res) => {
-        this.comments.unshift(res);
-        this.$emit("post");
-        this.modalComment = "";
-        this.isUploading = false;
-      });
-    },
-    clearInputs() {
-      this.$emit("close");
-      this.modalTitle = "";
-      this.modalEmail = "";
-      this.modalPassword = "";
-      this.modalFirstName = "";
-      this.modalLastName = "";
-      this.modalComment = "";
-      this.file = null;
-      this.image = null;
-      this.isUploading = false;
-    },
-    onChange(e) {
-      const file = e.target.files[0];
-      this.file = file;
-      this.image = URL.createObjectURL(file);
-    },
-  },
-};
-</script>
-
 <template>
   <Transition name="modal">
     <div class="modal-mask">
@@ -366,6 +255,117 @@ export default {
   </Transition>
 </template>
 
+<script>
+import { createUser } from "../services/UserService";
+import { createPost } from "../services/PostService";
+import { createComment } from "../services/CommentService";
+
+export default {
+  props: {
+    type: String,
+    post: Object,
+  },
+  mounted() {
+    if (this.type == "view" && this.post) {
+      this.getComments();
+    }
+  },
+  computed: {
+    updatedComments() {
+      this.comments = this.post.comments;
+      return this.comments;
+    },
+    validUpload() {
+      return this.file !== null && this.modalTitle !== "";
+    },
+    validSignUp() {
+      return (
+        (this.modalEmail &&
+          this.modalPassword &&
+          this.modalFirstName &&
+          this.modalLastName) !== ""
+      );
+    },
+    validComment() {
+      return this.modalComment !== "";
+    },
+  },
+  data() {
+    return {
+      modalEmail: "",
+      modalPassword: "",
+      modalFirstName: "",
+      modalLastName: "",
+      modalTitle: "",
+      modalComment: "",
+      comments: [],
+      file: null,
+      image: null,
+      isUploading: false,
+    };
+  },
+  methods: {
+    async registerUser() {
+      const user = {
+        email: this.modalEmail,
+        password: this.modalPassword,
+        firstName: this.modalFirstName,
+        lastName: this.modalLastName,
+      };
+      createUser(user.email, user.password, user.firstName, user.lastName).then((res) => {
+        console.log(res);
+        this.clearInputs();
+      });
+    },
+    uploadPost() {
+      let post = new FormData();
+      post.append("name", this.modalTitle);
+      post.append("image", this.file);
+      this.isUploading = true;
+
+      createPost(post).then((res) => {
+        console.log(res);
+        this.$emit("post");
+        this.clearInputs();
+      });
+    },
+    getComments() {
+      this.comments = this.post.comments;
+    },
+    postComment() {
+      const comment = {
+        postId: this.post.pk,
+        comment: this.modalComment,
+      };
+      this.isUploading = true;
+      createComment(comment.postId, comment.comment).then((res) => {
+        this.comments.unshift(res);
+        this.$emit("post");
+        this.modalComment = "";
+        this.isUploading = false;
+      });
+    },
+    clearInputs() {
+      this.$emit("close");
+      this.modalTitle = "";
+      this.modalEmail = "";
+      this.modalPassword = "";
+      this.modalFirstName = "";
+      this.modalLastName = "";
+      this.modalComment = "";
+      this.file = null;
+      this.image = null;
+      this.isUploading = false;
+    },
+    onChange(e) {
+      const file = e.target.files[0];
+      this.file = file;
+      this.image = URL.createObjectURL(file);
+    },
+  },
+};
+</script>
+
 <style>
 #preview {
   display: flex;
@@ -388,14 +388,6 @@ export default {
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
-}
-
-.modal-body {
-  margin: 20px 0;
-}
-
-.modal-default-button {
-  float: right;
 }
 
 .modal-enter-from {

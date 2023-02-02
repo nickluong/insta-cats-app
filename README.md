@@ -1,5 +1,5 @@
 # Insta-Cats App built with Vue 3 + Vite
-Insta-Cats is a basic app that features
+Insta-Cats is a basic app that features:
 - User Signup
 - View all photos with preview images
 - View comment on post

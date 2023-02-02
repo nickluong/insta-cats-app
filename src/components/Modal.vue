@@ -5,7 +5,6 @@ import { createComment } from "../services/CommentService";
 
 export default {
   props: {
-    show: Boolean,
     type: String,
     post: Object,
   },
@@ -112,7 +111,7 @@ export default {
 
 <template>
   <Transition name="modal">
-    <div v-if="show" class="modal-mask">
+    <div class="modal-mask">
       <div class="modal-wrapper">
         <div
           class="container max-w-2xl h-2/5 p-4 tracking-wide relative mx-auto my-auto rounded-xl bg-orange-50 divide-y-2 divide-tangerine-400 border border-tangerine-400 text-slate-900"
@@ -176,6 +175,7 @@ export default {
               >* Please Fill Required Fields</span
             >
             <button
+              id="saveButton"
               @click="registerUser"
               v-if="validSignUp"
               :disabled="!validSignUp || isUploading"
@@ -257,6 +257,7 @@ export default {
               >* Please Fill Required Fields</span
             >
             <button
+              id="uploadButton"
               @click="uploadPost"
               v-if="validUpload"
               :disabled="!validUpload || isUploading"
@@ -330,6 +331,7 @@ export default {
               <div
                 class="flex flex-col align-middle w-full max-h-1/5 my-1 self-stretch"
                 v-for="comment in updatedComments"
+                :key="comment.pk"
               >
                 <div
                   class="flex flex-row flex-initial self-start items-center tracking-wider mx-4 max-h-fit bg-white"
@@ -388,16 +390,6 @@ export default {
   vertical-align: middle;
 }
 
-/* .modal-container {
-  width: 300px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: rgb(143, 143, 143);
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
-} */
-
 .modal-body {
   margin: 20px 0;
 }
@@ -405,15 +397,6 @@ export default {
 .modal-default-button {
   float: right;
 }
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
 
 .modal-enter-from {
   opacity: 0;

@@ -32,8 +32,8 @@
       </div>
     </nav>
     <div class="grid grid-cols-1 sm:grid-cols-3 sm:gap-10 mt-12 justify-items-center">
-      <div v-for="post in loadedPosts">
-        <Card :post="post" @click="showViewModal(post)" :show="showCard" />
+      <div v-for="post in loadedPosts" :key="post.pk">
+        <Card :post="post" @click="showViewModal(post)" />
       </div>
     </div>
     <div
@@ -54,7 +54,7 @@
   </div>
 
   <Modal
-    :show="showModal"
+    v-if="showModal"
     :post="post"
     @post="getPosts"
     :type="modalType"
@@ -80,7 +80,6 @@ export default {
     return {
       showModal: false,
       modalType: "",
-      showCard: false,
       maxPosts: 9,
       users: [],
       allPosts: [],
